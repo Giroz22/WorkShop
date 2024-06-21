@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.riwi.workShop.api.dto.request.UserRequest;
 import com.riwi.workShop.api.dto.request.UserUpdateRequest;
+import com.riwi.workShop.api.dto.response.UserDetailResponse;
 import com.riwi.workShop.api.dto.response.UserResponse;
 import com.riwi.workShop.domain.entitties.User;
 import com.riwi.workShop.domain.repositories.UserRepository;
@@ -26,7 +27,6 @@ public class UserService implements IUserService {
     @Autowired
     private UserMapper UserMapper;
 
-    @Override
     public Page<UserResponse> getAll(int page, int size) {
         if(page<0) page  = 0;
         
@@ -35,14 +35,12 @@ public class UserService implements IUserService {
         return this.UserRepository.findAll(pagination).map( User -> this.UserMapper.ToResponse(User));
     }
 
-    @Override
-    public UserResponse getById(Long id) {
+    public UserDetailResponse getById(Long id) {
         User User =  this.find(id);
 
-        return this.UserMapper.ToResponse(User);
+        return this.UserMapper.ToDetailResponse(User);
     }
 
-    @Override
     public UserResponse create(UserRequest request) {
         User User = this.UserMapper.ToEntity(request);
 
@@ -51,7 +49,6 @@ public class UserService implements IUserService {
         return this.UserMapper.ToResponse(saved);
     }
 
-    @Override
     public UserResponse update(Long id, UserUpdateRequest request) {
         User User = find(id);
         User UserUpdate = this.UserMapper.ToEntity(request);
@@ -65,7 +62,6 @@ public class UserService implements IUserService {
         return this.UserMapper.ToResponse(UserUpdated);
     }
 
-    @Override
     public void delete(Long id) {
         User User =  this.find(id);
 
