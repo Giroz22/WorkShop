@@ -17,6 +17,6 @@ public class UserDetailResponse {
     private String email;
     private String fullName;
     private String role;
-    private List<LoanResponse> loans;
-    private List<ReservationResponse> reservations;
+    private List<LoanToUserResponse> loans;
+    private List<ReservationToUserResponse> reservations;
 }

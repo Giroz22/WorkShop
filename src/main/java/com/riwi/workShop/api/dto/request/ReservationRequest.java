@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ReservationRequest {
-    private String userId;
-    private String bookId;
+    private Long userId;
+    private Long bookId;
     private String reservationDate;
 }

@@ -1,5 +1,7 @@
 package com.riwi.workShop.infrastructure.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,12 +10,15 @@ import org.springframework.stereotype.Service;
 import com.riwi.workShop.api.dto.request.BookRequest;
 import com.riwi.workShop.api.dto.request.BookUpdateRequest;
 import com.riwi.workShop.api.dto.response.BookResponse;
+import com.riwi.workShop.api.dto.response.ReservationToBookResponse;
 import com.riwi.workShop.domain.entitties.Book;
+import com.riwi.workShop.domain.entitties.Reservation;
 import com.riwi.workShop.domain.repositories.BookRepository;
 
 import lombok.AllArgsConstructor;
 import com.riwi.workShop.infrastructure.abstract_services.IBookService;
 import com.riwi.workShop.infrastructure.helpers.mappers.BookMapper;
+import com.riwi.workShop.infrastructure.helpers.mappers.ReservationMapper;
 import com.riwi.workShop.util.exceptions.IdNotFoundException;
 
 @Service
@@ -25,6 +30,8 @@ public class BookService implements IBookService {
 
     @Autowired
     private BookMapper bookMapper;
+
+    private ReservationMapper reservationMapper;
 
     @Override
     public Page<BookResponse> getAll(int page, int size) {
@@ -74,5 +81,15 @@ public class BookService implements IBookService {
     
     private Book find(Long id){
         return this.bookRepository.findById(id).orElseThrow( ()-> new IdNotFoundException("Book"));
+    }
+
+    public List<ReservationToBookResponse> getAllReservation(Long id){
+        Book book = this.find(id);
+
+        List<Reservation> reservations =  book.getReservations();
+
+        List<ReservationToBookResponse> reservationsToBookResponse = this.reservationMapper.ToEntityToBookResponseList(reservations);
+
+        return reservationsToBookResponse;
     }
 }

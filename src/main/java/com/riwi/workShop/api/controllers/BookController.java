@@ -1,5 +1,7 @@
 package com.riwi.workShop.api.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.riwi.workShop.api.dto.request.BookRequest;
 import com.riwi.workShop.api.dto.request.BookUpdateRequest;
 import com.riwi.workShop.api.dto.response.BookResponse;
+import com.riwi.workShop.api.dto.response.ReservationToBookResponse;
 import com.riwi.workShop.infrastructure.services.BookService;
 
 import lombok.AllArgsConstructor;
@@ -54,6 +57,11 @@ public class BookController {
         this.bookService.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+ 
+    @GetMapping("/{id}/reservations")
+    public ResponseEntity<List<ReservationToBookResponse>> getAllReservations(@PathVariable Long id) {
+        return ResponseEntity.ok().body(this.bookService.getAllReservation(id));
     }
     
 }
